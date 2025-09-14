@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Security.Claims;
 using UrlShortener.BAL.Interfaces;
 using UrlShortener.BAL.Models;
+using UrlShortener.Exceptions;
 using UrlShortener.Helpers;
 using UrlShortener.Helpers.Commands;
 using UrlShortener.Helpers.Handlers;
@@ -45,22 +46,46 @@ namespace UrlShortener.Controllers
         [Route("Create")]
         public async Task<IActionResult> PostCreateAsync(UrlModel model)
         {
-            IUrlChecker urlChecker = new UrlChecker();
-            var checkedUrl = urlChecker.CheckAndReturnValidUrl(model.OriginalUrl);
-            IShortener shortener = new Shortener();
-            var shortedUrl = shortener.GetShortUrl(checkedUrl);
 
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            var command = new CreateUrlCommand
+            try
             {
-                OriginalUrl = model.OriginalUrl,
-                ShortedUrl = shortedUrl.ToString(),
-                UserId = userId!,
-                UserName = User.Identity!.Name!,
-            };
+                IUrlChecker urlChecker = new UrlChecker();
+                var checkedUrl = urlChecker.CheckAndReturnValidUrl(model.OriginalUrl);
 
-            await handler.Handle(command);
+                IShortener shortener = new Shortener();
+                var shortedUrl = shortener.GetShortUrl(checkedUrl);
+
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                var command = new CreateUrlCommand
+                {
+                    OriginalUrl = model.OriginalUrl,
+                    ShortedUrl = shortedUrl.ToString(),
+                    UserId = userId!,
+                    UserName = User.Identity!.Name!,
+                };
+
+                await handler.Handle(command);
+
+                TempData["Success"] = "URL успішно додано!";
+                return RedirectToAction("Index");
+            }
+            catch (InvalidOperationException)
+            {
+                TempData["Error"] = "Такий URL вже існує. Будь ласка, введіть інший.";
+            }
+            catch (InvalidUrlException)
+            {
+                TempData["Error"] = "Введено некоректний URL.";
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Сталася непередбачена помилка. Спробуйте пізніше.";
+            }
 
             return RedirectToAction("Index");
         }

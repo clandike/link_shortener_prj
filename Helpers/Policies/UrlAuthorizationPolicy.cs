@@ -1,14 +1,22 @@
-﻿using UrlShortener.BAL.Models;
+﻿using UrlShortener.BAL.Interfaces;
+using UrlShortener.BAL.Models;
 using UrlShortener.Helpers.Commands;
 
 namespace UrlShortener.Helpers.Policies
 {
     public class UrlAuthorizationPolicy : IAuthorizationPolicy
     {
-        public void CheckCreate(string userId)
+        public void CheckCreate(CreateUrlCommand command, IUrlService service)
         {
-            if (string.IsNullOrEmpty(userId))
-                throw new UnauthorizedAccessException("Only authorized users can create URLs.");
+            if (string.IsNullOrEmpty(command.UserId))
+                throw new UnauthorizedAccessException("Тільки авторизовані користувачі можуть створювати URL адреси.");
+
+            var entity = service.GetAllModels().SingleOrDefault(x => x.OriginalUrl == command.OriginalUrl);
+
+            if (entity != null)
+            {
+                throw new InvalidOperationException();
+            }
         }
 
         public void CheckDelete(DeleteUrlCommand command, UrlModel url)
@@ -20,7 +28,7 @@ namespace UrlShortener.Helpers.Policies
                 return;
 
             if (url.UserId != command.UserName)
-                throw new UnauthorizedAccessException("You can delete only your own URLs.");
+                throw new UnauthorizedAccessException("Ви можете видаляти лише свої створені скорочені URL адреси.");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using UrlShortener.BAL.Interfaces;
 using UrlShortener.BAL.Models;
+using UrlShortener.BAL.Services;
 using UrlShortener.Helpers.Commands;
 using UrlShortener.Helpers.Policies;
 
@@ -20,7 +21,7 @@ namespace UrlShortener.Helpers.Handlers
 
         public async Task Handle(CreateUrlCommand command)
         {
-            policy.CheckCreate(command.UserId);
+            policy.CheckCreate(command, urlService);
 
             var model = new UrlModel
             {
