@@ -1,0 +1,36 @@
+﻿@using UrlShortener.DAL.DbUrlModels
+@model List<Url>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+
+    <a href="Create">Add url</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th id="id">Id</th>
+                <th id="url">Url</th>
+                <th id="shortedUrl">Shorter url</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @foreach (Url model in Model)
+                {
+                    <td>@(model.Id)</td>
+                    <td><a href="@(model.OriginalUrl)"> @(model.OriginalUrl) </a> </td>
+                    <td><a href="@(model.OriginalUrl)"> @(model.ShortedUrl) </a> </td>
+                    <td>
+                        <a href="">Details</a>
+                        <a href="">Remove</a>
+                    </td>
+                }
+            </tr>
+
+        </tbody>
+    </table>
+</div>
