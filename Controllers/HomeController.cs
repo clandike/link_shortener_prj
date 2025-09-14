@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 using UrlShortener.BAL.Interfaces;
 using UrlShortener.BAL.Models;
 using UrlShortener.Helpers;
@@ -8,6 +10,7 @@ using UrlShortener.Models;
 
 namespace UrlShortener.Controllers
 {
+    //[Authorize]
     [Controller]
     public class HomeController : Controller
     {
@@ -22,6 +25,7 @@ namespace UrlShortener.Controllers
             this.urlDetailService = urlDetailService;
         }
 
+        //[AllowAnonymous]
         [HttpGet]
         public IActionResult Index()
         {
@@ -35,6 +39,7 @@ namespace UrlShortener.Controllers
             return View();
         }
 
+
         [HttpPost]
         [Route("Create")]
         public async Task<IActionResult> PostCreateAsync(UrlModel model)
@@ -47,6 +52,15 @@ namespace UrlShortener.Controllers
 
             model.ShortedUrl = value.OriginalString;
             await urlService.CreateAsync(model);
+            var entity = urlService.GetAllModels().Where(x => x.OriginalUrl == model.OriginalUrl && x.ShortedUrl == model.ShortedUrl).FirstOrDefault();
+
+            var urlDetailsModel = new UrlDetailsModel()
+            {
+                UrlId = entity!.Id,
+                CreatedBy = "123123",
+            };
+
+            await urlDetailService.CreateAsync(urlDetailsModel);
 
             return RedirectToAction("Index");
         }
@@ -61,7 +75,7 @@ namespace UrlShortener.Controllers
 
         [HttpGet]
         [Route("Details")]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> UrlDetails(int id)
         {
             var urlDetails = await urlDetailService.GetByIdAsync(id);
             return View(urlDetails);

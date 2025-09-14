@@ -4,7 +4,6 @@ using UrlShortener.BAL.Interfaces;
 using UrlShortener.BAL.Services;
 using UrlShortener.DAL.Context;
 using UrlShortener.DAL.Interfaces;
-using UrlShortener.DAL.Models;
 using UrlShortener.DAL.Repository;
 using UrlShortener.Helpers;
 using UrlShortener.Helpers.Interfaces;
@@ -22,6 +21,8 @@ builder.Services.AddDbContext<UsersDbContext>(options =>
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<UsersDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(opt => opt.TokenLifespan = TimeSpan.FromMinutes(2));
 
 builder.Services.AddScoped<IUrlRepository, UrlRepository>();
 builder.Services.AddScoped<IUrlDetailsRepository, UrlDetailsRepository>();
