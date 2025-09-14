@@ -13,13 +13,13 @@ namespace UrlShortener.Helpers.Policies
 
         public void CheckDelete(DeleteUrlCommand command, UrlModel url)
         {
-            if (string.IsNullOrEmpty(command.UserId))
+            if (string.IsNullOrEmpty(command.UserName))
                 throw new UnauthorizedAccessException();
 
             if (command.IsAdmin)
                 return;
 
-            if (url.UserId != command.UserId)
+            if (url.UserId != command.UserName)
                 throw new UnauthorizedAccessException("You can delete only your own URLs.");
         }
     }

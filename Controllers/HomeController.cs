@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -72,11 +72,24 @@ namespace UrlShortener.Controllers
             var command = new DeleteUrlCommand
             {
                 UrlId = id,
-                UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value!,
+                UserName = User.Identity.Name!,
                 IsAdmin = User.IsInRole("Admin")
             };
 
-            await handler.Handle(command);
+            try
+            {
+                await handler.Handle(command);
+
+                TempData["Success"] = "URL успішно видалено.";
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Сталася помилка при обробці запиту.";
+            }
             return RedirectToAction("Index");
         }
 
