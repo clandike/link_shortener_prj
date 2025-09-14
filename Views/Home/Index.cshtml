@@ -7,7 +7,10 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
 
-    <a href="Create"> Add url</a>
+    <a asp-controller="Home" asp-action="Create"
+       class="@(User.Identity?.IsAuthenticated == true ? "btn btn-success" : "d-none")">
+        Add url
+    </a>
 
     <table>
         <thead>
@@ -18,23 +21,29 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                @foreach (UrlModel model in Model)
-                {
+            @foreach (UrlModel model in Model)
+            {
+                <tr>
+
                     <td>@(model.Id)</td>
                     <td><a href="@(model.OriginalUrl)"> @(model.OriginalUrl) </a> </td>
                     <td><a href="@(model.OriginalUrl)"> @(model.ShortedUrl) </a> </td>
                     <td>
-                        <a class="btn btn-info btn-sm" asp-controller="Home" asp-action="UrlDetails" asp-route-id="@(model.Id)">
-                            Details
-                        </a>
-                        <form asp-action="RemoveUrl" asp-controller="Home" asp-route-id="@(model.Id)" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-danger">Remove</button>
-                        </form>
-                    </td> 
-                }
-            </tr>
-
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <a class="btn btn-info btn-sm" asp-controller="Home" asp-action="UrlDetails" asp-route-id="@(model.Id)">
+                                Details
+                            </a>
+                        }
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <form asp-action="RemoveUrl" asp-controller="Home" asp-route-id="@(model.Id)" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>
