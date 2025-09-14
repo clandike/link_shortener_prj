@@ -97,7 +97,7 @@ namespace UrlShortener.Controllers
             var command = new DeleteUrlCommand
             {
                 UrlId = id,
-                UserName = User.Identity.Name!,
+                UserName = User.Identity!.Name!,
                 IsAdmin = User.IsInRole("Admin")
             };
 

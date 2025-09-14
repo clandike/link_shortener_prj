@@ -1,12 +1,3 @@
-S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.csproj.AssemblyReference.cache
-S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.GeneratedMSBuildEditorConfig.editorconfig
-S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.AssemblyInfoInputs.cache
-S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.AssemblyInfo.cs
-S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.csproj.CoreCompileInputs.cache
-S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.MvcApplicationPartsAssemblyInfo.cache
-S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.RazorAssemblyInfo.cache
-S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.RazorAssemblyInfo.cs
-S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.sourcelink.json
 S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\.filenesting.json
 S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\appsettings.Development.json
 S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\appsettings.json
@@ -20,6 +11,7 @@ S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\AutoMapper.dll
 S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\Azure.Core.dll
 S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\Azure.Identity.dll
 S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\Humanizer.dll
+S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\Microsoft.AspNet.Identity.Core.dll
 S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
@@ -162,6 +154,15 @@ S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\BAL.dll
 S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\DAL.dll
 S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\BAL.pdb
 S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\DAL.pdb
+S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.csproj.AssemblyReference.cache
+S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.GeneratedMSBuildEditorConfig.editorconfig
+S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.AssemblyInfoInputs.cache
+S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.AssemblyInfo.cs
+S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.csproj.CoreCompileInputs.cache
+S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.MvcApplicationPartsAssemblyInfo.cache
+S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.RazorAssemblyInfo.cache
+S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.RazorAssemblyInfo.cs
+S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.sourcelink.json
 S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\staticwebassets.build.json
 S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\staticwebassets.development.json
 S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\staticwebassets\msbuild.UrlShortener.Microsoft.AspNetCore.StaticWebAssets.props
@@ -178,4 +179,3 @@ S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\refint\UrlShortener.d
 S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.pdb
 S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.genruntimeconfig.cache
 S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\ref\UrlShortener.dll
-S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\Microsoft.AspNet.Identity.Core.dll
