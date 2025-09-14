@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace UrlShortener.Database.Context
+namespace UrlShortener.DAL.Context
 {
     public class UsersDbContext : IdentityDbContext<IdentityUser>
     {

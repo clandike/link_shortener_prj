@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UrlShortener.DAL.Context;
 
@@ -11,9 +12,11 @@ using UrlShortener.DAL.Context;
 namespace UrlShortener.Migrations.UrlDb
 {
     [DbContext(typeof(UrlDbContext))]
-    partial class UrlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250914043103_AddedUrlDetailsTable")]
+    partial class AddedUrlDetailsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,9 +51,12 @@ namespace UrlShortener.Migrations.UrlDb
 
             modelBuilder.Entity("UrlShortener.DAL.Models.UrlDetails", b =>
                 {
-                    b.Property<int>("UrlId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("url_id");
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClickCount")
                         .HasColumnType("int")
@@ -65,7 +71,13 @@ namespace UrlShortener.Migrations.UrlDb
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("created_by");
 
-                    b.HasKey("UrlId");
+                    b.Property<int>("UrlId")
+                        .HasColumnType("int")
+                        .HasColumnName("url_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UrlId");
 
                     b.ToTable("url_details");
                 });

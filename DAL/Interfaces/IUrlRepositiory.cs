@@ -1,4 +1,4 @@
-﻿using UrlShortener.DAL.DbUrlModels;
+﻿using UrlShortener.DAL.Models;
 
 namespace UrlShortener.DAL.Interfaces
 {

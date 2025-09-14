@@ -7,14 +7,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UrlShortener.DAL.Context;
 
-
 #nullable disable
 
 namespace UrlShortener.Migrations.UrlDb
 {
     [DbContext(typeof(UrlDbContext))]
-    [Migration("20250913133650_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250914043345_ChangedStructureUrlDetails")]
+    partial class ChangedStructureUrlDetails
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,7 +25,7 @@ namespace UrlShortener.Migrations.UrlDb
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("UrlShortener.DAL.DbUrlModels.UrlModel", b =>
+            modelBuilder.Entity("UrlShortener.DAL.Models.Url", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,14 +33,6 @@ namespace UrlShortener.Migrations.UrlDb
                         .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("created_at");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int")
-                        .HasColumnName("created_by");
 
                     b.Property<string>("OriginalUrl")
                         .IsRequired()
@@ -56,6 +47,46 @@ namespace UrlShortener.Migrations.UrlDb
                     b.HasKey("Id");
 
                     b.ToTable("urls");
+                });
+
+            modelBuilder.Entity("UrlShortener.DAL.Models.UrlDetails", b =>
+                {
+                    b.Property<int>("UrlId")
+                        .HasColumnType("int")
+                        .HasColumnName("url_id");
+
+                    b.Property<int>("ClickCount")
+                        .HasColumnType("int")
+                        .HasColumnName("click_count");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("created_by");
+
+                    b.HasKey("UrlId");
+
+                    b.ToTable("url_details");
+                });
+
+            modelBuilder.Entity("UrlShortener.DAL.Models.UrlDetails", b =>
+                {
+                    b.HasOne("UrlShortener.DAL.Models.Url", "Url")
+                        .WithMany("Details")
+                        .HasForeignKey("UrlId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Url");
+                });
+
+            modelBuilder.Entity("UrlShortener.DAL.Models.Url", b =>
+                {
+                    b.Navigation("Details");
                 });
 #pragma warning restore 612, 618
         }

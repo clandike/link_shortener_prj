@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UrlShortener.DAL.DbUrlModels;
+using UrlShortener.DAL.Models;
 using UrlShortener.DAL.Interfaces;
 
 namespace UrlShortener.DAL.Repository
@@ -37,11 +37,6 @@ namespace UrlShortener.DAL.Repository
 
 
         public Url GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Url entity)
         {
             throw new NotImplementedException();
         }

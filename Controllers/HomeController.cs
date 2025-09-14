@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using UrlShortener.DAL.Context;
 using UrlShortener.DAL.Interfaces;
 using UrlShortener.DAL.Repository;
-using UrlShortener.Database.Context;
 using UrlShortener.Helpers;
 using UrlShortener.Helpers.Interfaces;
 using UrlShortener.Models;

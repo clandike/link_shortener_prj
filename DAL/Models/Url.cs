@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace UrlShortener.DAL.DbUrlModels
+namespace UrlShortener.DAL.Models
 {
     [Table("urls")]
     public class Url
@@ -16,10 +16,6 @@ namespace UrlShortener.DAL.DbUrlModels
         [Column("shorted_url")]
         public required string ShortedUrl { get; set; }
 
-        [Column("created_at")]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-        [Column("created_by")]
-        public required int CreatedBy { get; set; }
+        public IEnumerable<UrlDetails> Details { get; set; } = null!;
     }
 }
