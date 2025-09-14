@@ -1,0 +1,28 @@
+﻿@using System.Security.Cryptography
+@using System.Text
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Принцип роботи алгоритму скорочення URL</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Алгоритм скорочення посилання працює наступним чином:
+                    </p>
+                    <ol>
+                        <li>Користувач вводить <b>оригінальний URL</b>.</li>
+                        <li>Система бере його повний рядок (<code>AbsoluteUri</code>).</li>
+                        <li>Будується криптографічний хеш (SHA256).</li>
+                        <li>Перші кілька байтів хешу конвертуються у <b>Base62</b> (цифри + латинські літери).</li>
+                        <li>Формується нова адреса виду: <code>https://short.ly/&lt;код&gt;</code>.</li>
+                    </ol>
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

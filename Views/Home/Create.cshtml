@@ -1,9 +1,41 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model UrlShortener.BAL.Models.UrlModel
 @{
+    ViewData["Title"] = "Додати новий URL";
 }
-<form asp-controller="Home" method="post">
-    <input type="text" name="url"/>
-    <input type="submit" name="Submit"/>
-</form>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Додати новий URL</h4>
+                </div>
+                <div class="card-body">
+
+                    <form asp-controller="Home" asp-action="Create" method="post">
+                        <div class="mb-3">
+                            <label for="OriginalUrl" class="form-label">Оригінальна адреса</label>
+                            <input type="url"
+                                   id="OriginalUrl"
+                                   name="OriginalUrl"
+                                   class="form-control"
+                                   placeholder="https://example.com"
+                                   required />
+                            <div class="form-text">
+                                Введіть повне посилання, яке потрібно скоротити.
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Скоротити
+                        </button>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary ms-2">Назад
+                        </a>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

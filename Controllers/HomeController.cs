@@ -1,31 +1,38 @@
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using UrlShortener.DAL.Interfaces;
-using UrlShortener.DAL.Repository;
-using UrlShortener.Database.Context;
+using System.Security.Claims;
+using UrlShortener.BAL.Interfaces;
+using UrlShortener.BAL.Models;
+using UrlShortener.Exceptions;
 using UrlShortener.Helpers;
+using UrlShortener.Helpers.Commands;
+using UrlShortener.Helpers.Handlers;
 using UrlShortener.Helpers.Interfaces;
 using UrlShortener.Models;
 
 namespace UrlShortener.Controllers
 {
+    [Authorize]
+    [Route("/")]
     [Controller]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly UrlDbContext _context;
+        private readonly UrlCommandHandler handler;
 
-        public HomeController(ILogger<HomeController> logger, UrlDbContext context)
+        private readonly IUrlDetailsService urlDetailService;
+
+        public HomeController(IUrlDetailsService urlDetailService, UrlCommandHandler handler)
         {
-            _logger = logger;
-            _context = context;
+            this.handler = handler;
+            this.urlDetailService = urlDetailService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Index()
         {
-            IUrlRepositiory repository = new UrlRepository(_context);
-            return View(repository.GetAll());
+            return View(handler.Handle());
         }
 
         [HttpGet]
@@ -37,18 +44,92 @@ namespace UrlShortener.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public IActionResult PostCreate(string url)
+        public async Task<IActionResult> PostCreateAsync(UrlModel model)
         {
-            IUrlChecker urlChecker = new UrlChecker();
-            var checkedUrl = urlChecker.CheckAndReturnValidUrl(url);
 
-            IShortener shortener = new Shortener();
-            var value = shortener.GetShortUrl(checkedUrl);
+            try
+            {
+                IUrlChecker urlChecker = new UrlChecker();
+                var checkedUrl = urlChecker.CheckAndReturnValidUrl(model.OriginalUrl);
+
+                IShortener shortener = new Shortener();
+                var shortedUrl = shortener.GetShortUrl(checkedUrl);
+
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                var command = new CreateUrlCommand
+                {
+                    OriginalUrl = model.OriginalUrl,
+                    ShortedUrl = shortedUrl.ToString(),
+                    UserId = userId!,
+                    UserName = User.Identity!.Name!,
+                };
+
+                await handler.Handle(command);
+
+                TempData["Success"] = "URL успішно додано!";
+                return RedirectToAction("Index");
+            }
+            catch (InvalidOperationException)
+            {
+                TempData["Error"] = "Такий URL вже існує. Будь ласка, введіть інший.";
+            }
+            catch (InvalidUrlException)
+            {
+                TempData["Error"] = "Введено некоректний URL.";
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Сталася непередбачена помилка. Спробуйте пізніше.";
+            }
 
             return RedirectToAction("Index");
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        [Route("Remove")]
+        public async Task<IActionResult> RemoveUrl(int id)
+        {
+            var command = new DeleteUrlCommand
+            {
+                UrlId = id,
+                UserName = User.Identity!.Name!,
+                IsAdmin = User.IsInRole("Admin")
+            };
+
+            try
+            {
+                await handler.Handle(command);
+
+                TempData["Success"] = "URL успішно видалено.";
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Сталася помилка при обробці запиту.";
+            }
+            return RedirectToAction("Index");
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("Details")]
+        public async Task<IActionResult> UrlDetails(int id)
+        {
+            var urlDetails = await urlDetailService.GetByIdAsync(id);
+            return View(urlDetails);
+        }
+
+        [AllowAnonymous]
+        [Route("About")]
+        public IActionResult About()
         {
             return View();
         }
