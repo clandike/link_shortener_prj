@@ -6,8 +6,7 @@ namespace UrlShortener.Helpers
     {
         public Uri GetShortUrl(Uri url)
         {
-            Uri result = new("https://google.com");
-            return result;
+            return url;
         }
     }
 }

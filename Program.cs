@@ -4,6 +4,7 @@ using UrlShortener.BAL.Interfaces;
 using UrlShortener.BAL.Services;
 using UrlShortener.DAL.Context;
 using UrlShortener.DAL.Interfaces;
+using UrlShortener.DAL.Models;
 using UrlShortener.DAL.Repository;
 using UrlShortener.Helpers;
 using UrlShortener.Helpers.Interfaces;
@@ -23,9 +24,13 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IUrlRepository, UrlRepository>();
+builder.Services.AddScoped<IUrlDetailsRepository, UrlDetailsRepository>();
+
+builder.Services.AddScoped<IUrlService, UrlService>();
+builder.Services.AddScoped<IUrlDetailsService, UrlDetailsService>();
+
 builder.Services.AddScoped<IUrlChecker, UrlChecker>();
 builder.Services.AddScoped<IShortener, Shortener>();
-builder.Services.AddScoped<IUrlService, UrlService>();
 
 var app = builder.Build();
 

@@ -1,5 +1,5 @@
-﻿@using UrlShortener.DAL.Models
-@model List<Url>
+﻿@using UrlShortener.BAL.Models
+@model List<UrlModel>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -19,15 +19,19 @@
         </thead>
         <tbody>
             <tr>
-                @foreach (Url model in Model)
+                @foreach (UrlModel model in Model)
                 {
                     <td>@(model.Id)</td>
                     <td><a href="@(model.OriginalUrl)"> @(model.OriginalUrl) </a> </td>
                     <td><a href="@(model.OriginalUrl)"> @(model.ShortedUrl) </a> </td>
                     <td>
-                        <a href="">Details</a>
-                        <a href="">Remove</a>
-                    </td>
+                        <a class="btn btn-info btn-sm" asp-controller="Home" asp-action="Details" asp-route-id="@(model.Id)">
+                            Details
+                        </a>
+                        <form asp-action="RemoveUrl" asp-controller="Home" asp-route-id="@(model.Id)" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    </td> 
                 }
             </tr>
 
