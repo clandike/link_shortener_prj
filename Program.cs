@@ -7,7 +7,9 @@ using UrlShortener.DAL.Context;
 using UrlShortener.DAL.Interfaces;
 using UrlShortener.DAL.Repository;
 using UrlShortener.Helpers;
+using UrlShortener.Helpers.Handlers;
 using UrlShortener.Helpers.Interfaces;
+using UrlShortener.Helpers.Policies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +35,8 @@ builder.Services.AddScoped<IUrlDetailsService, UrlDetailsService>();
 
 builder.Services.AddScoped<IUrlChecker, UrlChecker>();
 builder.Services.AddScoped<IShortener, Shortener>();
+builder.Services.AddScoped<IAuthorizationPolicy, UrlAuthorizationPolicy>();
+builder.Services.AddScoped<UrlCommandHandler>();
 
 var app = builder.Build();
 

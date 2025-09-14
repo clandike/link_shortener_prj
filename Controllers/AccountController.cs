@@ -45,6 +45,7 @@ namespace UrlShortener.Controllers
 
                     if ((await signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false)).Succeeded)
                     {
+                        await signInManager.SignInAsync(user, isPersistent: false);
                         return Redirect("/");
                     }
                 }

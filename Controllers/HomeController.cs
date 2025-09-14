@@ -1,9 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Reflection.Metadata;
+using System.Security.Claims;
 using UrlShortener.BAL.Interfaces;
 using UrlShortener.BAL.Models;
 using UrlShortener.Helpers;
+using UrlShortener.Helpers.Commands;
+using UrlShortener.Helpers.Handlers;
 using UrlShortener.Helpers.Interfaces;
 using UrlShortener.Models;
 
@@ -13,14 +17,15 @@ namespace UrlShortener.Controllers
     [Controller]
     public class HomeController : Controller
     {
+        private readonly UrlCommandHandler handler;
+
         private readonly ILogger<HomeController> _logger;
-        private readonly IUrlService urlService;
         private readonly IUrlDetailsService urlDetailService;
 
-        public HomeController(ILogger<HomeController> logger, IUrlService urlService, IUrlDetailsService urlDetailService)
+        public HomeController(ILogger<HomeController> logger, IUrlDetailsService urlDetailService, UrlCommandHandler handler)
         {
+            this.handler = handler;
             _logger = logger;
-            this.urlService = urlService;
             this.urlDetailService = urlDetailService;
         }
 
@@ -28,7 +33,7 @@ namespace UrlShortener.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(urlService.GetAllModels().ToList());
+            return View(handler.Handle());
         }
 
         [HttpGet]
@@ -44,21 +49,19 @@ namespace UrlShortener.Controllers
         {
             IUrlChecker urlChecker = new UrlChecker();
             var checkedUrl = urlChecker.CheckAndReturnValidUrl(model.OriginalUrl);
-
             IShortener shortener = new Shortener();
-            var value = shortener.GetShortUrl(checkedUrl);
+            var shortedUrl = shortener.GetShortUrl(checkedUrl);
 
-            model.ShortedUrl = value.OriginalString;
-            await urlService.CreateAsync(model);
-            var entity = urlService.GetAllModels().Where(x => x.OriginalUrl == model.OriginalUrl && x.ShortedUrl == model.ShortedUrl).FirstOrDefault();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var urlDetailsModel = new UrlDetailsModel()
+            var command = new CreateUrlCommand
             {
-                UrlId = entity!.Id,
-                CreatedBy = "123123",
+                OriginalUrl = model.OriginalUrl,
+                ShortedUrl = shortedUrl.ToString(),
+                UserId = userId!,
             };
 
-            await urlDetailService.CreateAsync(urlDetailsModel);
+            await handler.Handle(command);
 
             return RedirectToAction("Index");
         }
@@ -67,10 +70,18 @@ namespace UrlShortener.Controllers
         [Route("Remove")]
         public async Task<IActionResult> RemoveUrl(int id)
         {
-            await urlService.DeleteByIdAsync(id);
+            var command = new DeleteUrlCommand
+            {
+                UrlId = id,
+                UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value!,
+                IsAdmin = User.IsInRole("Admin")
+            };
+
+            await handler.Handle(command);
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         [HttpGet]
         [Route("Details")]
         public async Task<IActionResult> UrlDetails(int id)
@@ -78,7 +89,6 @@ namespace UrlShortener.Controllers
             var urlDetails = await urlDetailService.GetByIdAsync(id);
             return View(urlDetails);
         }
-
 
         [AllowAnonymous]
         public IActionResult About()
