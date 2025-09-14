@@ -36,7 +36,7 @@ namespace UrlShortener.Helpers.Handlers
             var urlDetailsModel = new UrlDetailsModel()
             {
                 UrlId = entity!.Id,
-                CreatedBy = command.UserId,
+                CreatedBy = command.UserName,
             };
 
             await urlDetailsService.CreateAsync(urlDetailsModel);
@@ -47,9 +47,9 @@ namespace UrlShortener.Helpers.Handlers
             var url = await urlService.GetByIdAsync(command.UrlId);
             var urlDetails = await urlDetailsService.GetByIdAsync(command.UrlId);
             url.UserId = urlDetails.CreatedBy;
-            
+
             policy.CheckDelete(command, url);
-            
+
             await urlService.DeleteByIdAsync(command.UrlId);
         }
 

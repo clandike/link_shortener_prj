@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Reflection.Metadata;
 using System.Security.Claims;
 using UrlShortener.BAL.Interfaces;
 using UrlShortener.BAL.Models;
@@ -14,18 +13,17 @@ using UrlShortener.Models;
 namespace UrlShortener.Controllers
 {
     [Authorize]
+    [Route("/")]
     [Controller]
     public class HomeController : Controller
     {
         private readonly UrlCommandHandler handler;
 
-        private readonly ILogger<HomeController> _logger;
         private readonly IUrlDetailsService urlDetailService;
 
-        public HomeController(ILogger<HomeController> logger, IUrlDetailsService urlDetailService, UrlCommandHandler handler)
+        public HomeController(IUrlDetailsService urlDetailService, UrlCommandHandler handler)
         {
             this.handler = handler;
-            _logger = logger;
             this.urlDetailService = urlDetailService;
         }
 
@@ -59,6 +57,7 @@ namespace UrlShortener.Controllers
                 OriginalUrl = model.OriginalUrl,
                 ShortedUrl = shortedUrl.ToString(),
                 UserId = userId!,
+                UserName = User.Identity!.Name!,
             };
 
             await handler.Handle(command);
@@ -91,6 +90,7 @@ namespace UrlShortener.Controllers
         }
 
         [AllowAnonymous]
+        [Route("About")]
         public IActionResult About()
         {
             return View();
