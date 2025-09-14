@@ -4,46 +4,78 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
 
-    <a asp-controller="Home" asp-action="Create"
-       class="@(User.Identity?.IsAuthenticated == true ? "btn btn-success" : "d-none")">
-        Add url
-    </a>
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Список посилань</h3>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-controller="Home" asp-action="Create" class="btn btn-light btn-sm">
+                            Додати URL
+                        </a>
+                    }
+                </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th id="id">Id</th>
-                <th id="url">Url</th>
-                <th id="shortedUrl">Shorter url</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (UrlModel model in Model)
-            {
-                <tr>
+                <div class="card-body p-0">
+                    <table class="table table-striped table-hover mb-0 table-counter">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Оригінальне посилання</th>
+                                <th scope="col">Скорочене</th>
+                                <th scope="col" class="text-center">Дії</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var model in Model)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <a href="@(model.OriginalUrl)" target="_blank">
+                                            @(model.OriginalUrl)
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="@(model.OriginalUrl)" target="_blank">
+                                            @(model.ShortedUrl)
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (User.Identity?.IsAuthenticated ?? false)
+                                        {
+                                            <a class="btn btn-info btn-sm me-1"
+                                               asp-controller="Home"
+                                               asp-action="UrlDetails"
+                                               asp-route-id="@(model.Id)">
+                                                Деталі
+                                            </a>
 
-                    <td>@(model.Id)</td>
-                    <td><a href="@(model.OriginalUrl)"> @(model.OriginalUrl) </a> </td>
-                    <td><a href="@(model.OriginalUrl)"> @(model.ShortedUrl) </a> </td>
-                    <td>
-                        @if (User.Identity?.IsAuthenticated ?? false)
-                        {
-                            <a class="btn btn-info btn-sm" asp-controller="Home" asp-action="UrlDetails" asp-route-id="@(model.Id)">
-                                Details
-                            </a>
-                        }
-                        @if (User.Identity?.IsAuthenticated ?? false)
-                        {
-                            <form asp-action="RemoveUrl" asp-controller="Home" asp-route-id="@(model.Id)" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                            </form>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                                            <form asp-action="RemoveUrl"
+                                                  asp-controller="Home"
+                                                  asp-route-id="@(model.Id)"
+                                                  method="post"
+                                                  class="d-inline">
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    Видалити
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Тільки перегляд</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>

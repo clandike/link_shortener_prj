@@ -1,29 +1,50 @@
-﻿@using UrlShortener.Models;
+﻿@using UrlShortener.Models
 @model LoginViewModel
 
-@* <div class="bg-info text-white p-2">
-    <span class="navbar-brand m-lg-2">SPORTS STORE</span>
-</div> *@
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Login" asp-controller="Account" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label for="Name" class="control-label">Email</label>
-                <input id="Login" asp-for="Name" placeholder="Login" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">Вхід</h4>
+                </div>
+                <div class="card-body">
+
+                    <form asp-action="Login" asp-controller="Account" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">Login</label>
+                            <input asp-for="Name"
+                                   id="Login"
+                                   placeholder="Введіть логін"
+                                   class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Пароль</label>
+                            <input asp-for="Password"
+                                   id="Password"
+                                   type="password"
+                                   placeholder="Введіть пароль"
+                                   class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <input asp-for="ReturnUrl" type="hidden" />
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" type="submit">Увійти</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="Password" class="control-label">Password</label>
-                <input id="Password" asp-for="Password" type="password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input asp-for="ReturnUrl" type="hidden" class="form-control" />
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary mt-2" type="submit">Log In</button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>

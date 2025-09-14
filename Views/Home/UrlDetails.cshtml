@@ -1,26 +1,30 @@
-﻿@using UrlShortener.BAL.Models;
+﻿@using UrlShortener.BAL.Models
 @model UrlDetailsModel
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+
 @{
+    ViewData["Title"] = "URL Details";
 }
 
-<table>
-    <thead>
-        <tr>
-            <th id="id">Id</th>
-            <th id="url">Created at</th>
-            <th id="shortedUrl">Cerated By</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
+<div class="container my-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">URL Details</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">ID</dt>
+                <dd class="col-sm-9">@Model.UrlId</dd>
 
-            <td><h3>@(Model.UrlId)</h3></td>
-            <td><h3> @(Model.CreatedAt)</a> </td>
-            <td><h3>@(Model.CreatedBy)</h3></td>
-        </tr>
+                <dt class="col-sm-3">Created At</dt>
+                <dd class="col-sm-9">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
 
-    </tbody>
-</table>
+                <dt class="col-sm-3">Created By</dt>
+                <dd class="col-sm-9">@Model.CreatedBy</dd>
+            </dl>
+        </div>
+        <div class="card-footer text-end">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to List
+            </a>
+        </div>
+    </div>
+</div>
