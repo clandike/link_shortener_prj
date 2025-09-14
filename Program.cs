@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using UrlShortener.BAL.Interfaces;
+using UrlShortener.BAL.Services;
 using UrlShortener.DAL.Context;
 using UrlShortener.DAL.Interfaces;
 using UrlShortener.DAL.Repository;
@@ -20,8 +22,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<UsersDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<IUrlRepository, UrlRepository>();
 builder.Services.AddScoped<IUrlChecker, UrlChecker>();
 builder.Services.AddScoped<IShortener, Shortener>();
+builder.Services.AddScoped<IUrlService, UrlService>();
 
 var app = builder.Build();
 

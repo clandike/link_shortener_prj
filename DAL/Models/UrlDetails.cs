@@ -6,10 +6,6 @@ namespace UrlShortener.DAL.Models
     [Table("url_details")]
     public class UrlDetails
     {
-    //    [Key]
-    //    [Column("id")]
-    //    public int Id { get; set; }
-
         [Key]
         [ForeignKey("Url")]
         [Column("url_id")]

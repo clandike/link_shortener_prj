@@ -1,44 +1,42 @@
-﻿using Microsoft.EntityFrameworkCore;
-using UrlShortener.DAL.Models;
+﻿using UrlShortener.DAL.Models;
 using UrlShortener.DAL.Interfaces;
+using UrlShortener.DAL.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace UrlShortener.DAL.Repository
 {
-    public class UrlRepository : AbstractRepository, IUrlRepositiory
+    public class UrlRepository : AbstractRepository, IUrlRepository
     {
-        private readonly DbSet<Url> dbSet;
+        private readonly UrlDbContext dbContext;
 
-        public UrlRepository(DbContext context) : base(context)
+        public UrlRepository(UrlDbContext context) : base(context)
         {
             ArgumentNullException.ThrowIfNull(context);
-            this.dbSet = context.Set<Url>();
+            this.dbContext = context;
         }
 
-        public void Add(Url entity)
+        public async Task AddEntityAsync(Url entity)
         {
-            throw new NotImplementedException();
+            await this.dbContext.AddAsync(entity);
+            await this.dbContext.SaveChangesAsync();
         }
 
-        public void Delete(Url entity)
+        public async Task DeleteEntityAsync(Url entity)
         {
-            throw new NotImplementedException();
+            this.dbContext.Remove(entity);
+            await this.dbContext.SaveChangesAsync();
         }
 
-        public void DeleteById(int id)
+        public IEnumerable<Url> GetAllEntities()
         {
-            throw new NotImplementedException();
+            var entities = this.dbContext.Urls.Select(x => x);
+            return entities;
         }
 
-        public IEnumerable<Url> GetAll()
+        public async Task<Url> GetByIdEntityAsync(int id)
         {
-            var values = this.dbSet.Select(x => x).ToList();
-            return values;
-        }
-
-
-        public Url GetById(int id)
-        {
-            throw new NotImplementedException();
+            var entity = await this.dbContext.Urls.FirstOrDefaultAsync(x => x.Id == id);
+            return entity!;
         }
     }
 }
