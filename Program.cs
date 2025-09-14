@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TodoListApp.WebApi.Models;
 using UrlShortener.BAL.Interfaces;
 using UrlShortener.BAL.Services;
 using UrlShortener.DAL.Context;
@@ -47,11 +48,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+await IdentitySeedData.EnsurePopulated(app);
+
+await app.RunAsync();

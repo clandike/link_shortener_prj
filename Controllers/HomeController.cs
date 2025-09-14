@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Security.Claims;
 using UrlShortener.BAL.Interfaces;
 using UrlShortener.BAL.Models;
 using UrlShortener.Helpers;
@@ -10,7 +9,7 @@ using UrlShortener.Models;
 
 namespace UrlShortener.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Controller]
     public class HomeController : Controller
     {
@@ -25,7 +24,7 @@ namespace UrlShortener.Controllers
             this.urlDetailService = urlDetailService;
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Index()
         {
@@ -38,7 +37,6 @@ namespace UrlShortener.Controllers
         {
             return View();
         }
-
 
         [HttpPost]
         [Route("Create")]
@@ -82,7 +80,8 @@ namespace UrlShortener.Controllers
         }
 
 
-        public IActionResult Privacy()
+        [AllowAnonymous]
+        public IActionResult About()
         {
             return View();
         }

@@ -178,3 +178,4 @@ S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\refint\UrlShortener.d
 S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.pdb
 S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\UrlShortener.genruntimeconfig.cache
 S:\Work\Projects\InforseTask\UrlShortener\obj\Debug\net8.0\ref\UrlShortener.dll
+S:\Work\Projects\InforseTask\UrlShortener\bin\Debug\net8.0\Microsoft.AspNet.Identity.Core.dll
